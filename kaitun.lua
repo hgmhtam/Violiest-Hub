@@ -25,9 +25,51 @@ getgenv().F16 = true -- AutoStats
 getgenv().F17 = true -- AutoCDK
 getgenv().F18 = true -- AutoMirrorFractal
 getgenv().F19 = true -- AutoMirageIsland
-getgenv().F20 = true -- AutoRaceV2V3
+getgenv().F20 = function() -- AutoRaceV2V3 (Nhìn trăng + bật V3)
+    while true do
+        wait(1)
+        local player = game.Players.LocalPlayer
+        if player.Character and player.Data.Race.Value == "V2" then
+            if game.Workspace:FindFirstChild("Mirage Island") then
+                local head = player.Character:FindFirstChild("Head")
+                if head and head.Position.Y > 3000 then
+                    print("Nhìn trăng, spam bật Race V3!")
+                    for i = 1, 20 do -- Tăng số lần spam
+                        game.ReplicatedStorage.Remotes.RaceV3:FireServer()
+                        wait(0.3)
+                    end
+                    local templePos = Vector3.new(9999, 9999, 9999)
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(templePos)
+                    wait(2)
+                    if game.Workspace:FindFirstChild("Lever") then
+                        fireclickdetector(game.Workspace.Lever.ClickDetector)
+                    else
+                        print("Chưa đủ điều kiện mở Race V3!")
+                    end
+                end
+            end
+        end
+    end
+end
+getgenv().F23 = function() -- Auto Đánh Dough King
+    while true do
+        wait(1)
+        local player = game.Players.LocalPlayer
+        if game.Workspace:FindFirstChild("Dough King") then
+            print("Phát hiện Dough King, tự động chiến đấu!")
+            local boss = game.Workspace["Dough King"]
+            while boss and boss.Parent do
+                player.Character.HumanoidRootPart.CFrame = boss.HumanoidRootPart.CFrame * CFrame.new(0, 10, 0)
+                game.ReplicatedStorage.Remotes.Attack:FireServer()
+                wait(0.2)
+            end
+        end
+    end
+end
+
 getgenv().F21 = true -- AutoBuyHaki
 getgenv().F22 = true -- AutoElectricPuzzle
+
 
 -- Trạng thái hoàn thành nhiệm vụ (làm xáo trộn tên)
 getgenv().T1 = {
@@ -78,3 +120,5 @@ spawn(F2)
 spawn(F6)
 spawn(F21)
 spawn(UI)
+spawn(getgenv().F22) -- Chạy Auto Dough King
+
